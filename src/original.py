@@ -16,10 +16,10 @@ MAX_KERNEL_LENGTH = 31
 WINDOW_NAME = 'Smoothing Demo'
 DEFAULT_IMAGE = '../data/uniform-plus-saltpepr.tif'
 FILTERS: List[Filter] = [
-    {'name': 'Homogeneous Blur', 'strategy': blur_strategy},
-    {'name': 'Gaussian Blur', 'strategy': gaussian_blur_strategy},
-    {'name': 'Median Blur', 'strategy': median_blur_strategy},
-    {'name': 'Bilateral Blur', 'strategy': bilateral_filter_strategy}
+    {'alias': 'homogeneous', 'name': 'Homogeneous Blur', 'strategy': blur_strategy},
+    {'alias': 'gaussian', 'name': 'Gaussian Blur', 'strategy': gaussian_blur_strategy},
+    {'alias': 'median', 'name': 'Median Blur', 'strategy': median_blur_strategy},
+    {'alias': 'bilateral', 'name': 'Bilateral Blur', 'strategy': bilateral_filter_strategy}
 ]
 
 

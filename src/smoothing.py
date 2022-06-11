@@ -7,20 +7,22 @@ from numpy import ndarray
 from filter_strategy import blur_strategy, median_blur_strategy, Filter
 from window import Window
 
-#  Global Variables
-DELAY_CAPTION = 1500
-DELAY_IMAGE = 2000
-DELAY_BLUR = 180
-MAX_KERNEL_LENGTH = 31
-WINDOW_NAME = 'Smoothing Demo'
-DEFAULT_IMAGE = '../data/uniform-plus-saltpepr.tif'
+#  Global Variables     # TODO move this configuration to a separate file
+DELAY_CAPTION: int = 1500
+DELAY_IMAGE: int = 2000
+DELAY_BLUR: int = 180
+MAX_KERNEL_LENGTH: int = 31
+WINDOW_NAME: str = 'Smoothing Demo'
+DEFAULT_IMAGE: str = '../data/uniform-plus-saltpepr.tif'
 FILTERS: List[Filter] = [
-    {'name': 'Homogeneous Blur', 'strategy': blur_strategy},
-    {'name': 'Median Blur', 'strategy': median_blur_strategy},
+    {'alias': 'mean', 'name': 'Mean Blur', 'strategy': blur_strategy},
+    {'alias': 'median', 'name': 'Median Blur', 'strategy': median_blur_strategy},
 ]
+DEFAULT_FILTER: Filter = FILTERS[1]  # median
+CONFIG = [DEFAULT_IMAGE, DEFAULT_FILTER, DELAY_BLUR]
 
 
-def run(window: Window) -> None:
+def run(window: Window, filter_type: Filter) -> None:
     cv.namedWindow(WINDOW_NAME, cv.WINDOW_AUTOSIZE)
 
     src_image: ndarray = window.get_src_image()
@@ -30,23 +32,40 @@ def run(window: Window) -> None:
     window.display_image(src_image, DELAY_IMAGE)
 
     # Applying the filters
-    for filter in FILTERS:
-        window.display_filter(filter.get('name'), filter.get('strategy'), src_image)
+    window.display_filter(filter_type.get('name'), filter_type.get('strategy'), src_image)
 
     #  Done
     window.display_caption('Done!')
 
 
-if __name__ == "__main__":
+def load_args(argv: list[str]) -> list[str]:
+    for i, arg in enumerate(argv):
+        if i == 1:  # filter
+            filter_result = list(filter(lambda f: f.get('alias') == arg, FILTERS))
+            if len(filter_result) == 0:
+                raise Exception('Filter strategy does not exists!')
+            else:
+                CONFIG[i] = filter_result[0]
+        elif i == 2:  # delay
+            CONFIG[i] = int(arg)
+        else:
+            CONFIG[i] = arg
+
+    return CONFIG
+
+
+# TODO use that webapp to improve the readme
+
+if __name__ == "__main__":  # TODO impl passing of value by the print
     argv: list[str] = sys.argv[1:]
-    filename = argv[0] if len(argv) > 0 else DEFAULT_IMAGE
+    filename, filter_type, delay_blur = load_args(argv)
 
     window = Window(
         window_name=WINDOW_NAME,
         filename=filename,
         max_iterations=MAX_KERNEL_LENGTH,
         delay_caption=DELAY_CAPTION,
-        delay_blur=DELAY_BLUR
+        delay_blur=delay_blur
     )
 
-    run(window)
+    run(window, filter_type)

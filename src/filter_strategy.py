@@ -7,6 +7,7 @@ FilterStrategy = Callable[[ndarray, int], ndarray]
 
 
 class Filter(TypedDict):
+    alias: str
     name: str
     strategy: FilterStrategy
 
