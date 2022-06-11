@@ -12,17 +12,17 @@ class FilterType(TypedDict):
     strategy: FilterStrategy
 
 
-def blur_strategy(image: ndarray, index: int) -> ndarray:
-    return cv.blur(image, (index, index))
+def blur_strategy(image: ndarray, ksize: int) -> ndarray:
+    return cv.blur(image, (ksize, ksize))
 
 
-def gaussian_blur_strategy(image: ndarray, index: int) -> ndarray:
-    return cv.GaussianBlur(image, (index, index), 0)
+def gaussian_blur_strategy(image: ndarray, ksize: int) -> ndarray:
+    return cv.GaussianBlur(image, (ksize, ksize), 0)
 
 
-def median_blur_strategy(image: ndarray, index: int) -> ndarray:
-    return cv.medianBlur(image, index)
+def median_blur_strategy(image: ndarray, ksize: int) -> ndarray:
+    return cv.medianBlur(image, ksize)
 
 
-def bilateral_filter_strategy(image: ndarray, index: int) -> ndarray:
-    return cv.bilateralFilter(image, index, index * 2, index / 2)
+def bilateral_filter_strategy(image: ndarray, ksize: int) -> ndarray:
+    return cv.bilateralFilter(image, ksize, ksize * 2, ksize / 2)

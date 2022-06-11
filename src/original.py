@@ -5,7 +5,7 @@ from numpy import ndarray
 
 from filter_strategy import blur_strategy, median_blur_strategy, gaussian_blur_strategy, bilateral_filter_strategy, \
     FilterType
-from window import Window
+from original_window import OriginalWindow
 
 #  Global Variables
 DELAY_CAPTION = 1500
@@ -22,7 +22,7 @@ DEFAULT_FILTERS: list[FilterType] = [
 ]
 
 
-def run(window: Window) -> None:
+def run(window: OriginalWindow) -> None:
     cv.namedWindow(WINDOW_NAME, cv.WINDOW_AUTOSIZE)
 
     src_image: ndarray = window.get_src_image()
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     argv: list[str] = sys.argv[1:]
     filename = argv[0] if len(argv) > 0 else DEFAULT_IMAGE
 
-    window = Window(
+    window = OriginalWindow(
         window_name=WINDOW_NAME,
         filename=filename,
         max_iterations=MAX_KERNEL_LENGTH,

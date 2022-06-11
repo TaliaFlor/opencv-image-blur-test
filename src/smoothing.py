@@ -10,8 +10,9 @@ from window import Window
 #  Global Variables
 DELAY_CAPTION: int = 1500
 DELAY_IMAGE: int = 2000
-DELAY_BLUR: int = 180
-MAX_KERNEL_LENGTH: int = 31
+DELAY_BLUR: int = 0
+DEFAULT_KSIZE: int = 3
+MAX_ITERATIONS: int = 3
 WINDOW_NAME: str = 'Smoothing Demo'
 DEFAULT_IMAGE: str = '../data/uniform-plus-saltpepr.tif'
 DEFAULT_FILTERS: list[FilterType] = [
@@ -56,7 +57,8 @@ if __name__ == "__main__":
     window = Window(
         window_name=WINDOW_NAME,
         filename=filename,
-        max_iterations=MAX_KERNEL_LENGTH,
+        ksize=DEFAULT_KSIZE,
+        max_iterations=MAX_ITERATIONS,
         delay_caption=DELAY_CAPTION,
         delay_blur=delay_blur
     )

@@ -9,13 +9,12 @@ def load_image(filename: str) -> ndarray:
     return cv.imread(filename)
 
 
-class Window:
+class OriginalWindow:
 
-    def __init__(self, window_name: str, filename: str, ksize: int, max_iterations: int, delay_caption: int,
+    def __init__(self, window_name: str, filename: str, max_iterations: int, delay_caption: int,
                  delay_blur: int) -> None:
         self.window_name = window_name
         self.src_image: ndarray = load_image(filename)
-        self.ksize = ksize
         self.max_iterations = max_iterations
         self.delay_caption = delay_caption
         self.delay_blur = delay_blur
@@ -52,7 +51,6 @@ class Window:
         if max_iterations is None:
             max_iterations = self.max_iterations
 
-        dst_image: ndarray = image
-        for i in range(max_iterations):
-            dst_image = filter_strategy(dst_image, self.ksize)
+        for i in range(1, max_iterations, 2):
+            dst_image: ndarray = filter_strategy(image, i)
             self.display_image(dst_image)
