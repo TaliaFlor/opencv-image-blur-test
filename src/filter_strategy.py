@@ -6,7 +6,7 @@ from numpy import ndarray
 FilterStrategy = Callable[[ndarray, int], ndarray]
 
 
-class Filter(TypedDict):
+class FilterType(TypedDict):
     alias: str
     name: str
     strategy: FilterStrategy

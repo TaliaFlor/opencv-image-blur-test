@@ -21,6 +21,6 @@ It can be achived in three diferent ways:
 3. By using the default values:
     - **image:** `../data/uniform-plus-saltpepr.tif`
     - **filter strategy:** `median`
-    - **blur delay:** `180`
+    - **blur delay:** `180 ms`
 
 Futher configuration can be done through editing the global variables' section of the `src/smoothing.py` file directly.

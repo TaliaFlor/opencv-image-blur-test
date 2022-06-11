@@ -1,28 +1,28 @@
 import sys
-from typing import List
 
 import cv2 as cv
 from numpy import ndarray
 
-from filter_strategy import blur_strategy, median_blur_strategy, Filter
+from config import Config
+from filter_strategy import blur_strategy, median_blur_strategy, FilterType
 from window import Window
 
-#  Global Variables     # TODO move this configuration to a separate file
+#  Global Variables
 DELAY_CAPTION: int = 1500
 DELAY_IMAGE: int = 2000
 DELAY_BLUR: int = 180
 MAX_KERNEL_LENGTH: int = 31
 WINDOW_NAME: str = 'Smoothing Demo'
 DEFAULT_IMAGE: str = '../data/uniform-plus-saltpepr.tif'
-FILTERS: List[Filter] = [
+DEFAULT_FILTERS: list[FilterType] = [
     {'alias': 'mean', 'name': 'Mean Blur', 'strategy': blur_strategy},
     {'alias': 'median', 'name': 'Median Blur', 'strategy': median_blur_strategy},
 ]
-DEFAULT_FILTER: Filter = FILTERS[1]  # median
+DEFAULT_FILTER: FilterType = DEFAULT_FILTERS[1]  # median
 CONFIG = [DEFAULT_IMAGE, DEFAULT_FILTER, DELAY_BLUR]
 
 
-def run(window: Window, filter_type: Filter) -> None:
+def run(window: Window, filter_type: FilterType) -> None:
     cv.namedWindow(WINDOW_NAME, cv.WINDOW_AUTOSIZE)
 
     src_image: ndarray = window.get_src_image()
@@ -31,34 +31,27 @@ def run(window: Window, filter_type: Filter) -> None:
     window.display_caption('Original Image')
     window.display_image(src_image, DELAY_IMAGE)
 
-    # Applying the filters
     window.display_filter(filter_type.get('name'), filter_type.get('strategy'), src_image)
 
-    #  Done
     window.display_caption('Done!')
 
 
-def load_args(argv: list[str]) -> list[str]:
-    for i, arg in enumerate(argv):
-        if i == 1:  # filter
-            filter_result = list(filter(lambda f: f.get('alias') == arg, FILTERS))
-            if len(filter_result) == 0:
-                raise Exception('Filter strategy does not exists!')
-            else:
-                CONFIG[i] = filter_result[0]
-        elif i == 2:  # delay
-            CONFIG[i] = int(arg)
+def get_config() -> list:
+    config = Config(default_config=CONFIG, default_filters=DEFAULT_FILTERS)
+    argv: list[str] = sys.argv[1:]
+    if len(argv) > 0:
+        return config.load_args(argv)
+    else:
+        if not config.ask_to_display_config_questions():
+            return CONFIG
         else:
-            CONFIG[i] = arg
-
-    return CONFIG
+            return config.ask_config_questions(DEFAULT_IMAGE, DEFAULT_FILTER, DELAY_BLUR)
 
 
 # TODO use that webapp to improve the readme
 
-if __name__ == "__main__":  # TODO impl passing of value by the print
-    argv: list[str] = sys.argv[1:]
-    filename, filter_type, delay_blur = load_args(argv)
+if __name__ == "__main__":
+    filename, filter_type, delay_blur = get_config()
 
     window = Window(
         window_name=WINDOW_NAME,

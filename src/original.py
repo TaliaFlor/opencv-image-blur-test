@@ -1,21 +1,20 @@
 import sys
-from typing import List
 
 import cv2 as cv
-#  Global Variables
 from numpy import ndarray
 
 from filter_strategy import blur_strategy, median_blur_strategy, gaussian_blur_strategy, bilateral_filter_strategy, \
-    Filter
+    FilterType
 from window import Window
 
+#  Global Variables
 DELAY_CAPTION = 1500
 DELAY_IMAGE = 2000
 DELAY_BLUR = 150
 MAX_KERNEL_LENGTH = 31
 WINDOW_NAME = 'Smoothing Demo'
 DEFAULT_IMAGE = '../data/uniform-plus-saltpepr.tif'
-FILTERS: List[Filter] = [
+DEFAULT_FILTERS: list[FilterType] = [
     {'alias': 'homogeneous', 'name': 'Homogeneous Blur', 'strategy': blur_strategy},
     {'alias': 'gaussian', 'name': 'Gaussian Blur', 'strategy': gaussian_blur_strategy},
     {'alias': 'median', 'name': 'Median Blur', 'strategy': median_blur_strategy},
@@ -33,8 +32,8 @@ def run(window: Window) -> None:
     window.display_image(src_image, DELAY_IMAGE)
 
     # Applying the filters
-    for filter in FILTERS:
-        window.display_filter(filter.get('name'), filter.get('strategy'), src_image)
+    for f in DEFAULT_FILTERS:
+        window.display_filter(f.get('name'), f.get('strategy'), src_image)
 
     #  Done
     window.display_caption('Done!')
