@@ -7,20 +7,23 @@ OpenCV documentation. A refactored version can be found in `src/original.py`.
 
 The modified code is on the `src/smoothing.py` file.
 
-The following values can be configured by the user:
+
+## Configuration
+
+The following values can be modified by the user:
 
 - **image:** the full or relative path to the image.
 - **filter strategy:** the blur algorithm to be used. Valid values are `mean` or `median`
 - **blur delay:** how long does each processing image stays on the screen (ms). Type `0` to disable this feature and
   pass them through a key press.
 
-It can be achived in three diferent ways:
+This configuration can be done in three diferent ways:
 
 1. By answering the prompt questions
-2. By command-line arguments, in the following order: image, filter strategy and blur delay.
+2. By passing command-line arguments in the following order: image, filter strategy and blur delay.
 3. By using the default values:
     - **image:** `../data/uniform-plus-saltpepr.tif`
     - **filter strategy:** `median`
     - **blur delay:** `0 ms`
 
-Futher configuration can be done through editing the global variables' section of the `src/smoothing.py` file directly.
+Futher configuration can be done through directly editing the global variables' section of the `src/smoothing.py` file.
